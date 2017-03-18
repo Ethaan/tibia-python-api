@@ -27,5 +27,4 @@ class Tibia:
         isByUrl = isUrl(urlOrName)
         if isByUrl == False:
             url = self.baseUrlGuild + urlOrName.replace(' ', '+')
-        print(url)
         return getPageConent(url, readGuildInformation)

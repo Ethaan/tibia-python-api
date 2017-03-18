@@ -12,13 +12,10 @@ def readOnlinePlayers(html):
         for characterData in cols:
             text = encodeString(characterData.get_text())
             if count == 0:
-                print(count)
                 characterDataDic['name'] = text
             elif count == 1:
-                print(count)
                 characterDataDic['level'] = text
             elif count == 2:
-                print(count)
                 characterDataDic['vocation'] = text
             responseCharactersOnline.append(characterDataDic)
             count += 1
