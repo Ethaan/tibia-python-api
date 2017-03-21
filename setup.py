@@ -7,5 +7,5 @@ setup(
   author = 'Ethaan Escareno',
   author_email = 'ethan.rosanoo@gmail.com',
   url = 'https://github.com/Ethaan/tibia-python-api',
-  keywords = ['tibia', 'api', 'rpg'],
+  keywords = ['tibia', 'api', 'rpg'], requires=['requests', 'bs4']
 )

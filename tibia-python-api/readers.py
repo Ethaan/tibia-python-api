@@ -1,52 +1,56 @@
 import re
-from utils import encodeString, camelize
+from utils import encode_string, camelize
 
-def readOnlinePlayers(html):
-    responseCharactersOnline = []
-    referenceContent = html.findAll("tr", { "class" : "LabelH" })
-    onlinePlayersTable = referenceContent[0].parent.find_all('tr')
-    for playerRow in onlinePlayersTable:
-        characterDataDic = {}
+
+def read_online_players(html):
+    response_character_online = []
+    reference_content = html.findAll("tr", {"class": "LabelH"})
+    online_players_table = reference_content[0].parent.find_all('tr')
+    for playerRow in online_players_table:
+        character_data_dict = {}
         count = 0
         cols = playerRow.find_all('td')
         for characterData in cols:
-            text = encodeString(characterData.get_text())
+            text = encode_string(characterData.get_text())
             if count == 0:
-                characterDataDic['name'] = text
+                character_data_dict['name'] = text
             elif count == 1:
-                characterDataDic['level'] = text
+                character_data_dict['level'] = text
             elif count == 2:
-                characterDataDic['vocation'] = text
-            responseCharactersOnline.append(characterDataDic)
+                character_data_dict['vocation'] = text
+            response_character_online.append(character_data_dict)
             count += 1
-    return responseCharactersOnline
+    return response_character_online
 
-def readCharacterInformation(html):
-    responseCharacterData = {}
+
+def read_character_information(html):
+    reponse_character_data = {}
     pattern = re.compile(r'Character Information')
-    characterData = html.find(text=pattern).parent.parent.parent.parent
-    for data in characterData:
-        text = encodeString(data.get_text())
-        twoPointsIndex = text.find(':')
-        responseCharacterData[camelize(text[:twoPointsIndex])] = text[twoPointsIndex + 1:]
-    return responseCharacterData
+    character_data = html.find(text=pattern).parent.parent.parent.parent
+    for data in character_data:
+        text = encode_string(data.get_text())
+        two_points_index = text.find(':')
+        reponse_character_data[camelize(text[:two_points_index])] = text[two_points_index + 1:]
+    return reponse_character_data
 
-def readCharacterDeathInformation(html):
-    responseCharacterData = []
+
+def read_character_death_information(html):
+    response_character_data = []
     pattern = re.compile(r'Character Deaths')
-    characterDeathData = html.find(text=pattern).parent.parent.parent.parent
-    for data in characterDeathData:
-        text = encodeString(data.get_text())
-        cetIndex = text.find('CET')
-        if cetIndex > 1:
-            responseCharacterData.append({
-                'date': text[:cetIndex + 3],
-                'killedByMessage': text[cetIndex + 3:]
+    character_data = html.find(text=pattern).parent.parent.parent.parent
+    for data in character_data:
+        text = encode_string(data.get_text())
+        cet_index = text.find('CET')
+        if cet_index > 1:
+            response_character_data.append({
+                'date': text[:cet_index + 3],
+                'killed_by_message': text[cet_index + 3:]
             })
-    return responseCharacterData
+    return response_character_data
 
-def readGuildInformation(html):
-    guildData = {}
-    guildInformation = html.find('div', { 'id': 'GuildInformationContainer' })
-    guildData['guildInformation'] = encodeString(guildInformation.get_text())
-    return guildData
+
+def read_guild_information(html):
+    guild_data = {}
+    guild_information = html.find('div', {'id': 'GuildInformationContainer'})
+    guild_data['guild_information'] = encode_string(guild_information.get_text())
+    return guild_data
